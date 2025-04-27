@@ -191,6 +191,8 @@ class ZJUWebVPNSession(requests.Session):
             return super().request(method, url, **kwargs)
 
         # Rewrite URL to pass through WebVPN
+        if isinstance(url, bytes):
+            url = url.decode()
         new_url = convert_url(url)
         return super().request(method, new_url, **kwargs)
 

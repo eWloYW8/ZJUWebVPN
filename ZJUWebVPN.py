@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Author: eWloYW8
 
-__all__ = ["ZJUWebVPNSession", "convert_url", "revert_url"]
-__version__ = "0.1.2"
+__all__ = ["ZJUWebVPNSession", "convert_url", "revert_url", "check_network"]
+__version__ = "0.1.3"
 
 import requests
 import xml.etree.ElementTree as ET

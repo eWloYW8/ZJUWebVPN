@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ZJUWebVPN",
-    version="0.1.1",
+    version="0.1.2",
     author="eWloYW8",
     author_email="3171132517@qq.com",
     description="A Python wrapper for Zhejiang University WebVPN",

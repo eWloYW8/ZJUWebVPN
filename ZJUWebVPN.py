@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: eWloYW8
 
-__all__ = ["ZJUWebVPNSession"]
+__all__ = ["ZJUWebVPNSession", "convert_url"]
 
 import requests
 import xml.etree.ElementTree as ET
@@ -9,6 +9,40 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5
 import binascii
 from urllib.parse import urlparse, urlunparse
+
+def convert_url(original_url):
+    """
+    Convert an original URL to the format required by WebVPN.
+
+    WebVPN rewrites hostnames by replacing dots with hyphens,
+    appending '-s' for HTTPS, and including port information if needed.
+
+    Args:
+        original_url (str): The original URL to access.
+
+    Returns:
+        str: The rewritten URL for WebVPN.
+    """
+    parsed = urlparse(original_url)
+    
+    # Rewrite hostname: replace '.' with '-'
+    hostname = parsed.hostname.replace('.', '-')
+
+    # Append '-s' if the original scheme is HTTPS
+    if parsed.scheme == 'https':
+        hostname += '-s'
+
+    # Append port information if not standard ports
+    if parsed.port and not (parsed.scheme == 'http' and parsed.port == 80) and not (parsed.scheme == 'https' and parsed.port == 443):
+        hostname += f'-{parsed.port}-p'
+
+    # Add WebVPN domain suffix
+    hostname += '.webvpn.zju.edu.cn:8001'
+
+    # Assemble final URL
+    new_url = urlunparse(('http', hostname, parsed.path or '/', '', '', ''))
+
+    return new_url
 
 class ZJUWebVPNSession(requests.Session):
     """
@@ -73,41 +107,6 @@ class ZJUWebVPNSession(requests.Session):
             # Raise an exception with detailed error message if login fails
             raise Exception("Login failed", login_response_xml.find("Message").text)
     
-    @staticmethod
-    def convert_url(original_url):
-        """
-        Convert an original URL to the format required by WebVPN.
-
-        WebVPN rewrites hostnames by replacing dots with hyphens,
-        appending '-s' for HTTPS, and including port information if needed.
-
-        Args:
-            original_url (str): The original URL to access.
-
-        Returns:
-            str: The rewritten URL for WebVPN.
-        """
-        parsed = urlparse(original_url)
-    
-        # Rewrite hostname: replace '.' with '-'
-        hostname = parsed.hostname.replace('.', '-')
-
-        # Append '-s' if the original scheme is HTTPS
-        if parsed.scheme == 'https':
-            hostname += '-s'
-
-        # Append port information if not standard ports
-        if parsed.port and not (parsed.scheme == 'http' and parsed.port == 80) and not (parsed.scheme == 'https' and parsed.port == 443):
-            hostname += f'-{parsed.port}-p'
-
-        # Add WebVPN domain suffix
-        hostname += '.webvpn.zju.edu.cn:8001'
-
-        # Assemble final URL
-        new_url = urlunparse(('http', hostname, parsed.path or '/', '', '', ''))
-
-        return new_url
-    
     def request(self, method, url, **kwargs):
         """
         Override the base request method.
@@ -128,6 +127,6 @@ class ZJUWebVPNSession(requests.Session):
             return super().request(method, url, **kwargs)
 
         # Rewrite URL to pass through WebVPN
-        new_url = self.convert_url(url)
+        new_url = convert_url(url)
         return super().request(method, new_url, **kwargs)
 

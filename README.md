@@ -18,7 +18,7 @@ from ZJUWebVPN import ZJUWebVPNSession
 session = ZJUWebVPNSession('your_zju_username', 'your_zju_password')
 
 # Example: GET request to an internal site
-resp = session.get('https://jwbinfosys.zju.edu.cn/default2.aspx')
+resp = session.get('https://www.cc98.org/')
 print(resp.text)
 ```
 
@@ -27,7 +27,7 @@ print(resp.text)
 ### 1. GET a page
 
 ```python
-resp = session.get('https://internal.zju.edu.cn/page')
+resp = session.get('https://www.cc98.org/')
 print(resp.text)
 ```
 
@@ -35,7 +35,7 @@ print(resp.text)
 
 ```python
 data = {'key1': 'value1', 'key2': 'value2'}
-resp = session.post('https://internal.zju.edu.cn/submit', data=data)
+resp = session.post('https://test.zju.edu.cn/submit', data=data)
 print(resp.text)
 ```
 

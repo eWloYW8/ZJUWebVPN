@@ -89,6 +89,25 @@ def revert_url(webvpn_url):
     
     return original_url
 
+def check_network():
+    """
+    Check the network environment by using the Zhejiang University mirror station API.
+    
+    This function queries the Zhejiang University mirror station API to determine the
+    current network environment. It checks if the network is within the campus network
+    and whether it is using IPv4 or IPv6.
+
+    Returns:
+        int: The network status.  
+            - 0: Not in the campus network.  
+            - 1: Campus network with IPv4.  
+            - 2: Campus network with IPv6.  
+    """
+    network_check_api_url = "https://mirrors.zju.edu.cn/api/is_campus_network"
+    response = requests.get(network_check_api_url)
+    return int(response.text)
+
+
 class ZJUWebVPNSession(requests.Session):
     """
     A session class to handle authentication and request routing via ZJU WebVPN.

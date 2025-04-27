@@ -11,7 +11,7 @@ from Crypto.Cipher import PKCS1_v1_5
 import binascii
 from urllib.parse import urlparse, urlunparse
 
-def convert_url(original_url):
+def convert_url(original_url: str) -> str:
     """
     Convert an original URL to the format required by WebVPN.
 
@@ -45,7 +45,7 @@ def convert_url(original_url):
 
     return new_url
 
-def revert_url(webvpn_url):
+def revert_url(webvpn_url: str) -> str:
     """
     Revert a WebVPN formatted URL back to its original URL.
 
@@ -89,11 +89,11 @@ def revert_url(webvpn_url):
     
     return original_url
 
-def check_network():
+def check_network() -> int:
     """
-    Check the network environment by using the Zhejiang University mirror station API.
+    Check the network environment by using the Zhejiang University Mirror API.
     
-    This function queries the Zhejiang University mirror station API to determine the
+    This function queries the Zhejiang University Mirror API to determine the
     current network environment. It checks if the network is within the campus network
     and whether it is using IPv4 or IPv6.
 
@@ -124,7 +124,7 @@ class ZJUWebVPNSession(requests.Session):
     LOGIN_AUTH_URL = "https://webvpn.zju.edu.cn/por/login_auth.csp?apiversion=1"
     LOGIN_PSW_URL = "https://webvpn.zju.edu.cn/por/login_psw.csp?anti_replay=1&encrypt=1&apiversion=1"
 
-    def __init__(self, ZJUWebUser, ZJUWebPassword, *args, **kwargs):
+    def __init__(self, ZJUWebUser: str, ZJUWebPassword: str, *args, **kwargs):
         """
         Initialize a ZJUWebVPNSession instance and log into the WebVPN.
 

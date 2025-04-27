@@ -12,7 +12,7 @@ Login once, access all ZJU internal sites as if you are on campus.
 ## Quick Start
 
 ```python
-from zju_webvpn import ZJUWebVPNSession  # Replace with your actual filename
+from ZJUWebVPN import ZJUWebVPNSession
 
 # Create a session and login
 session = ZJUWebVPNSession('your_zju_username', 'your_zju_password')

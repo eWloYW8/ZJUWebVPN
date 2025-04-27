@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Author: eWloYW8
 
-__all__ = ["ZJUWebVPNSession", "convert_url"]
+__all__ = ["ZJUWebVPNSession", "convert_url", "revert_url"]
+__version__ = "0.1.2"
 
 import requests
 import xml.etree.ElementTree as ET
@@ -43,6 +44,50 @@ def convert_url(original_url):
     new_url = urlunparse(('http', hostname, parsed.path or '/', '', '', ''))
 
     return new_url
+
+def revert_url(webvpn_url):
+    """
+    Revert a WebVPN formatted URL back to its original URL.
+
+    Args:
+        webvpn_url (str): The WebVPN formatted URL.
+
+    Returns:
+        str: The original URL.
+    """
+    parsed = urlparse(webvpn_url)
+    
+    # Extract the transformed hostname part before the WebVPN suffix
+    hostname_part = parsed.hostname.split('.webvpn.zju.edu.cn')[0]
+    parts = hostname_part.split('-')
+    
+    port = None
+    scheme = 'http'
+    
+    # Check and extract port information if present
+    if len(parts) >= 2 and parts[-1] == 'p' and parts[-2].isdigit():
+        port = int(parts[-2])
+        parts = parts[:-2]  # Remove the port and 'p' parts
+    
+    # Check and extract scheme (HTTPS) if present
+    if parts and parts[-1] == 's':
+        scheme = 'https'
+        parts = parts[:-1]  # Remove the 's' part
+    
+    # Reconstruct the original hostname by joining with dots
+    original_hostname = '.'.join(parts)
+    
+    # Build the netloc with port if necessary
+    netloc = original_hostname
+    if port is not None:
+        netloc += f':{port}'
+    
+    # Reconstruct the original URL
+    original_url = urlunparse(
+        (scheme, netloc, parsed.path, parsed.params, parsed.query, parsed.fragment)
+    )
+    
+    return original_url
 
 class ZJUWebVPNSession(requests.Session):
     """

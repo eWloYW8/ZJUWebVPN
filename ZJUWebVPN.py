@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Author: eWloYW8
 
+__all__ = ["ZJUWebVPNSession"]
+
 import requests
 import xml.etree.ElementTree as ET
 from Crypto.PublicKey import RSA

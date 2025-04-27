@@ -9,6 +9,11 @@ Login once, access all ZJU internal sites as if you are on campus.
 - Fully compatible with [`requests`](https://docs.python-requests.org/en/latest/) API
 - Easy to download files, submit forms, crawl internal resources, etc.
 
+## Install
+```bash
+pip install ZJUWebVPN
+```
+
 ## Quick Start
 
 ```python

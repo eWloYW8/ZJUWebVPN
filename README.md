@@ -3,6 +3,8 @@
 A Python wrapper for accessing **Zhejiang University WebVPN** automatically.  
 Login once, access all ZJU internal sites as if you are on campus.
 
+[![Build and Release](https://github.com/eWloYW8/ZJUWebVPN/actions/workflows/release.yml/badge.svg)](https://github.com/eWloYW8/ZJUWebVPN/actions/workflows/release.yml)
+
 ## Features
 - Auto login to [webvpn.zju.edu.cn](https://webvpn.zju.edu.cn)
 - Transparent URL conversion (no need to manually rewrite URLs)

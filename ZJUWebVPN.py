@@ -197,3 +197,13 @@ class ZJUWebVPNSession(requests.Session):
         new_url = convert_url(url)
         return super().request(method, new_url, **kwargs)
 
+    @property
+    def TWFID(self) -> str:
+        """
+        Get the TWFID cookie value from the session.
+
+        Returns:
+            str: The TWFID cookie value.
+        """
+        return self.cookies.get("TWFID", "")
+

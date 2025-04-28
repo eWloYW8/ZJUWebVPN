@@ -46,6 +46,14 @@ resp = session.post('https://test.zju.edu.cn/submit', data=data)
 print(resp.text)
 ```
 
+### 3. Context Manager
+
+```python
+with ZJUWebVPNSession(user, pwd) as session:
+    r = session.get('https://example.com')
+```
+
+
 ## Requirements
 - `requests`
 - `pycryptodome`

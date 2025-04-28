@@ -171,7 +171,7 @@ class ZJUWebVPNSession(requests.Session):
             # Raise an exception with detailed error message if login fails
             raise Exception("Login failed", login_response_xml.find("Message").text)
     
-    def request(self, method, url, webvpn = True, **kwargs):
+    def request(self, method, url, *args, webvpn=True, **kwargs):
         """
         Override the base request method.
 
@@ -189,13 +189,13 @@ class ZJUWebVPNSession(requests.Session):
         """
         if not self.logined or not webvpn:
             # If not logged in or webvpn is False, use the original URL
-            return super().request(method, url, **kwargs)
+            return super().request(method, url, *args, **kwargs)
 
         # Rewrite URL to pass through WebVPN
         if isinstance(url, bytes):
             url = url.decode()
         new_url = convert_url(url)
-        return super().request(method, new_url, **kwargs)
+        return super().request(method, new_url, *args, **kwargs)
 
     @property
     def TWFID(self) -> str:

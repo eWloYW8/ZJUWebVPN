@@ -171,7 +171,7 @@ class ZJUWebVPNSession(requests.Session):
             # Raise an exception with detailed error message if login fails
             raise Exception("Login failed", login_response_xml.find("Message").text)
     
-    def request(self, method, url, **kwargs):
+    def request(self, method, url, webvpn = True, **kwargs):
         """
         Override the base request method.
 
@@ -181,13 +181,14 @@ class ZJUWebVPNSession(requests.Session):
         Args:
             method (str): HTTP method (e.g., 'GET', 'POST').
             url (str): The target URL.
+            webvpn (bool): Whether to request through WebVPN. Default is True.
             **kwargs: Additional parameters passed to the request.
 
         Returns:
             requests.Response: The response object.
         """
-        if not self.logined:
-            # Not logged in, normal behavior
+        if not self.logined or not webvpn:
+            # If not logged in or webvpn is False, use the original URL
             return super().request(method, url, **kwargs)
 
         # Rewrite URL to pass through WebVPN

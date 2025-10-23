@@ -2,7 +2,7 @@
 # Author: eWloYW8
 
 __all__ = ["ZJUWebVPNSession", "WengineVPNSession"]
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import requests
 import bs4
@@ -103,7 +103,7 @@ class WengineVPNSession(requests.Session):
             binascii.hexlify(iv_bytes).decode()
             + binascii.hexlify(encrypted).decode()
         )
-        converted_url = f"{self.baseURL}/{scheme}/{encrypted_hex}{path}?{query}"
+        converted_url = f"{self.baseURL}/{scheme}/{encrypted_hex}{path}{'?' if query else ''}{query}"
 
         return converted_url
 

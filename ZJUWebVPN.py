@@ -15,6 +15,7 @@ class WengineVPNSession(requests.Session):
     LOGIN_URL = "/login"
     INFO_URL = "/user/info"
     DO_LOGIN_URL = "/do-login"
+    DO_CONFIRM_LOGIN_URL = "/do-confirm-login"
 
     def __init__(self, baseURL: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -71,8 +72,18 @@ class WengineVPNSession(requests.Session):
             self.URL_encrypt_iv = userinfo_response_json["wrdvpnIV"]
             self.URL_encrypt_key = userinfo_response_json["wrdvpnKey"]
             self.canVisitProtocol = userinfo_response_json["canVisitProtocol"]
-
             
+            self.logined = True
+        elif login_response_json.get("error") == "NEED_CONFIRM":
+            self.post(self.baseURL + self.DO_CONFIRM_LOGIN_URL, data=data, webvpn=False)
+
+            userinfo_response = self.get(self.baseURL + self.INFO_URL, webvpn=False)
+            userinfo_response_json = userinfo_response.json()
+
+            self.URL_encrypt_iv = userinfo_response_json["wrdvpnIV"]
+            self.URL_encrypt_key = userinfo_response_json["wrdvpnKey"]
+            self.canVisitProtocol = userinfo_response_json["canVisitProtocol"]
+
             self.logined = True
         else:
             raise Exception("Login failed", login_response_json.get("message", "Unknown error"))
